@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cartesius_development
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    command: bash -c "bundle exec rails db:prepare && bundle exec rails s -b 0.0.0.0 -p 3000"
+    volumes:
+      - .:/rails
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      PGHOST: db
+      PGUSER: postgres
+      PGPASSWORD: password
+      PGDATABASE: cartesius_development
+      BUNDLE_WITHOUT: ""
+      BUNDLE_DEPLOYMENT: "0"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
