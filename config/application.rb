@@ -20,6 +20,10 @@ Bundler.require(*Rails.groups)
 
 module App
   class Application < Rails::Application
+    # Use SQL schema dumps and skip dumping after each migration to avoid pg_dump version mismatch in dev containers.
+    config.active_record.schema_format = :sql
+    config.active_record.dump_schema_after_migration = false
+    config.active_record.schema_format = :sql
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 

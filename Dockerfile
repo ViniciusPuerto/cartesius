@@ -15,9 +15,16 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 WORKDIR /rails
 
 # Install base packages
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+# Add Postgres APT repository and install matching client
+RUN set -eux; \
+    apt-get update -qq; \
+    apt-get install --no-install-recommends -y curl gnupg ca-certificates; \
+    install -d /etc/apt/keyrings; \
+    curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --batch --yes --dearmor --no-tty -o /etc/apt/keyrings/pg.gpg; \
+    echo "deb [signed-by=/etc/apt/keyrings/pg.gpg] http://apt.postgresql.org/pub/repos/apt $(grep VERSION_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list; \
+    apt-get update -qq; \
+    apt-get install --no-install-recommends -y libjemalloc2 libvips postgresql-client-16; \
+    rm -rf /var/lib/apt/lists/*
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -29,9 +36,16 @@ ENV RAILS_ENV="production" \
 FROM base AS build
 
 # Install packages needed to build gems
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+# build stage needs pg client too for pg_dump
+RUN set -eux; \
+    apt-get update -qq; \
+    apt-get install --no-install-recommends -y curl gnupg ca-certificates; \
+    install -d /etc/apt/keyrings; \
+    curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --batch --yes --dearmor --no-tty -o /etc/apt/keyrings/pg.gpg; \
+    echo "deb [signed-by=/etc/apt/keyrings/pg.gpg] http://apt.postgresql.org/pub/repos/apt $(grep VERSION_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list; \
+    apt-get update -qq; \
+    apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config libgeos-dev postgresql-client-16; \
+    rm -rf /var/lib/apt/lists/*
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./

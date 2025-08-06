@@ -53,6 +53,9 @@ GEM
       activemodel (= 8.0.2)
       activesupport (= 8.0.2)
       timeout (>= 0.4.0)
+    activerecord-postgis-adapter (11.0.0)
+      activerecord (~> 8.0.0)
+      rgeo-activerecord (~> 8.0.0)
     activestorage (8.0.2)
       actionpack (= 8.0.2)
       activejob (= 8.0.2)
@@ -91,6 +94,7 @@ GEM
     debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    diff-lcs (1.6.2)
     dotenv (3.1.8)
     drb (2.2.3)
     ed25519 (1.4.0)
@@ -98,6 +102,11 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
+    factory_bot (6.5.4)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.0)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -236,6 +245,27 @@ GEM
     regexp_parser (2.11.0)
     reline (0.6.2)
       io-console (~> 0.5)
+    rgeo (3.0.1)
+    rgeo-activerecord (8.0.0)
+      activerecord (>= 7.0)
+      rgeo (>= 3.0)
+    rspec-core (3.13.5)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (6.1.5)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      railties (>= 6.1)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
+    rspec-support (3.13.4)
     rubocop (1.79.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -266,6 +296,8 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
+    shoulda-matchers (6.5.0)
+      activesupport (>= 5.2.0)
     solid_cable (3.0.11)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -322,14 +354,18 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  activerecord-postgis-adapter (~> 11.0)
   bootsnap
   brakeman
   debug
+  factory_bot_rails (~> 6.4)
   kamal
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 8.0.2)
+  rspec-rails (~> 6.1)
   rubocop-rails-omakase
+  shoulda-matchers (~> 6.4)
   solid_cable
   solid_cache
   solid_queue
