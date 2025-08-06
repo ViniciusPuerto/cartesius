@@ -6,6 +6,7 @@ services:
   # Built from the production‐optimised Dockerfile (multistage).
   # ----------------------------------------------------------------
   app:
+    env_file: .env.production
     build:
       context: .
       target: base 
