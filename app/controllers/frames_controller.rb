@@ -43,8 +43,13 @@ class FramesController < ApplicationController
   # DELETE /frames/:id
   def destroy
     frame = Frame.find(params[:id])
-    frame.destroy
-    head :no_content
+
+    if frame.circles.exists?
+      render json: { errors: ["Cannot delete frame with associated circles"] }, status: :unprocessable_entity
+    else
+      frame.destroy
+      head :no_content
+    end
   end
 
   private
