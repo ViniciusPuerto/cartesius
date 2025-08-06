@@ -73,8 +73,10 @@ class FramesController < ApplicationController
   end
 
   def frame_builder_params
-    params.require(:frame).permit(:board_id, :center_x, :center_y, :width, :height)
-          .to_h
-          .deep_symbolize_keys
+    attrs = params.require(:frame).permit(:board_id, :center_x, :center_y, :width, :height)
+                 .to_h
+                 .deep_symbolize_keys
+    attrs[:board_id] ||= Board.find_by!(name: "main").id
+    attrs
   end
 end
