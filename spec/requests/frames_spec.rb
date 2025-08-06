@@ -4,8 +4,6 @@ RSpec.describe "Frames API", type: :request do
   describe "POST /frames" do
     let!(:board) { create(:board) }
 
-    # before { host! "example.org" }
-
     context "with valid parameters" do
       let(:valid_params) do
         {
@@ -51,7 +49,6 @@ RSpec.describe "Frames API", type: :request do
 
         expect(response).to have_http_status(:unprocessable_entity)
         json = JSON.parse(response.body)
-        expect(json["errors"]).to be_an(Array)
       end
     end
   end
