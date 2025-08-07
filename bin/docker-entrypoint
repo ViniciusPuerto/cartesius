@@ -1,16 +1,22 @@
 #!/bin/bash -e
-
 rm -f tmp/pids/server.pid
 
-# Enable jemalloc for reduced memory usage and latency.
-if [ -z "${LD_PRELOAD+x}" ]; then
-    LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)
-    export LD_PRELOAD
+# Wait for Postgres
+if [ -n "$DATABASE_URL" ] || [ -n "$PGHOST" ]; then
+  HOST=${PGHOST:-$(echo "$DATABASE_URL" | sed -n 's|^.*postgresql://[^@]*@\([^:/]*\).*|\1|p')}
+  PORT=${PGPORT:-$(echo "$DATABASE_URL" | sed -n 's|^.*:\([0-9][0-9]*\)/.*|\1|p')}
+  PORT=${PORT:-5432}
+
+  echo "Waiting for Postgres at $HOST:$PORT ..."
+  until pg_isready -h "$HOST" -p "$PORT" -q; do
+    sleep 1
+  done
+  echo "Postgres is ready."
 fi
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+# If running the server, prepare DB
+if [ "${@: -2:1}" = "./bin/rails" ] && [ "${@: -1:1}" = "server" ]; then
   ./bin/rails db:prepare
 fi
 
-exec "${@}"
+exec "$@"
