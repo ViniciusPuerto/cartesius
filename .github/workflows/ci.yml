@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:16
+        image: postgis/postgis:16-3.4
         env:
           POSTGRES_DB: cartesius_test
           POSTGRES_USER: postgres
@@ -50,8 +50,8 @@ jobs:
       - name: Install system deps
         run: sudo apt-get update && sudo apt-get -y install libpq-dev
 
-      - name: Run migrations
-        run: bundle exec rails db:schema:load
+      - name: Prepare database
+        run: bundle exec rails db:prepare
 
       - name: Run RSpec
         run: bundle exec rspec --format progress
