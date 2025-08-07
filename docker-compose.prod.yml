@@ -1,10 +1,10 @@
 services:
   app:
-    image: ghcr.io/viniciusporto/cartesius:latest
-    env_file:
-      - .env.production
+    image: ghcr.io/viniciuspuerto/cartesius:latest
+    env_file: .env.production
     environment:
       RAILS_ENV: production
+      DATABASE_URL: postgres://postgres:password@db:5432/cartesius_production
       RAILS_LOG_TO_STDOUT: "1"
       RAILS_MAX_THREADS: 5
     ports:
