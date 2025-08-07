@@ -82,4 +82,9 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  url: <%= ENV.fetch("DATABASE_URL") %>
+  primary:
+    url: <%= ENV.fetch("DATABASE_URL") %>
+    adapter: <%= ENV.fetch("DB_ADAPTER", "postgis") %>
+  cable:
+    url: <%= ENV.fetch("DATABASE_URL") %>
+    adapter: <%= ENV.fetch("DB_ADAPTER", "postgis") %>
