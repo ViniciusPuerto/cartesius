@@ -9,13 +9,5 @@
     encode gzip
 
     # Proxy all incoming requests to the Rails app service
-    reverse_proxy app:3000 {
-        # Active health-checking (uses new directive name)
-        health_uri /healthcheck
-        health_interval 30s
-    }
-
-    # Lightweight healthcheck response without hitting Rails
-    @hc path /healthcheck
-    respond @hc 200
+    reverse_proxy app:3000
 }
