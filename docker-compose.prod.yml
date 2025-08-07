@@ -1,27 +1,48 @@
+version: "3.9"
+
 services:
+  # Reverse proxy providing HTTPS via Let's Encrypt
+  caddy:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"    # HTTP  -> automatic redirect to HTTPS
+      - "443:443"  # HTTPS -> proxied to the Rails app
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+  # Rails application (API)
   app:
     image: ghcr.io/viniciuspuerto/cartesius:latest
-    env_file: .env.production
+    restart: unless-stopped
     environment:
       RAILS_ENV: production
       DATABASE_URL: postgres://postgres:password@db:5432/cartesius_production
+      # Provide the master key via environment on the host or via CI/CD secret
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       RAILS_LOG_TO_STDOUT: "1"
       RAILS_MAX_THREADS: 5
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"   # internal only – Caddy talks to this port
     depends_on:
       - db
-    restart: unless-stopped
 
+  # PostgreSQL with PostGIS
   db:
     image: postgis/postgis:16-3.4
+    restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: cartesius_production
     volumes:
       - db_data:/var/lib/postgresql/data
-    restart: unless-stopped
 
 volumes:
   db_data:
+  caddy_data:
+  caddy_config:

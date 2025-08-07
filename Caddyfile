@@ -1,0 +1,18 @@
+# Caddy configuration for Cartesius API
+# Replace the site address below if you later attach a real domain.
+# Caddy will request/renew a Let’s Encrypt certificate automatically.
+
+ec2-52-67-23-66.sa-east-1.compute.amazonaws.com {
+    encode gzip
+
+    # Proxy all requests to the Rails container
+    reverse_proxy app:3000 {
+        # Health check to restart proxy if the app goes down
+        health_path /healthcheck
+        health_interval 30s
+    }
+
+    # Optional: respond OK for health checks without hitting Rails
+    @hc path /healthcheck
+    respond @hc 200
+}
