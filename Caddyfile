@@ -1,18 +1,21 @@
-# Caddy configuration for Cartesius API
-# Replace the site address below if you later attach a real domain.
-# Caddy will request/renew a Let’s Encrypt certificate automatically.
+# Caddy configuration for Cartesius API (HTTP-only)
+# This setup listens on port 80 for any Host header, then proxies to the
+# internal Rails container running on app:3000.
+#
+# When you later attach a real domain and want HTTPS, replace the site
+# address (:80) with the domain name and open port 443 in your compose file.
 
-ec2-52-67-23-66.sa-east-1.compute.amazonaws.com {
+:80 {
     encode gzip
 
-    # Proxy all requests to the Rails container
+    # Proxy all incoming requests to the Rails app service
     reverse_proxy app:3000 {
-        # Health check to restart proxy if the app goes down
-        health_path /healthcheck
+        # Active health-checking (uses new directive name)
+        health_uri /healthcheck
         health_interval 30s
     }
 
-    # Optional: respond OK for health checks without hitting Rails
+    # Lightweight healthcheck response without hitting Rails
     @hc path /healthcheck
     respond @hc 200
 }
