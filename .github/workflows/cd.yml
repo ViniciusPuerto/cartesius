@@ -42,6 +42,8 @@ jobs:
 
   deploy:
     needs: build-and-push
+    env:
+      REMOTE_DIR: ${{ secrets.REMOTE_APP_DIR || '/home/ubuntu/cartesius' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +54,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: mkdir -p "${{ secrets.REMOTE_APP_DIR }}"
+          script: mkdir -p "$REMOTE_DIR"
 
       - name: Copy docker-compose to server
         uses: appleboy/scp-action@v0.1.7
@@ -61,7 +63,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: docker-compose.prod.yml
-          target: ${{ secrets.DOCKER_COMPOSE_PATH }}
+          target: ${{ env.REMOTE_DIR }}
 
       - name: Pull image & restart
         uses: appleboy/ssh-action@v1.0.3
@@ -71,6 +73,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_PAT }}
-            cd "${{ secrets.REMOTE_APP_DIR }}"
+            cd "$REMOTE_DIR"
             docker compose pull
             docker compose up -d --remove-orphans
