@@ -9,7 +9,6 @@ services:
     env_file: .env.production
     build:
       context: .
-      target: base 
     image: cartesius:latest
     environment:
       RAILS_ENV: production
