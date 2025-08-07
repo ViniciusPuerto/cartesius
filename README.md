@@ -5,6 +5,11 @@ Geometric playground built with **Ruby on Rails 8 (API-only)**, PostgreSQL 16 & 
 It manages boards (Cartesian planes), square frames, and circles with spatial validations powered by PostGIS.  
 The default demo data contains a single *main* board plus one frame and a few circles.
 
+
+[Here](https://app.swaggerhub.com/apis-docs/VINICIUSALVESPORTO/Cartesius/1.0.0) you can see the swagger docs for the api
+
+[Here](ec2-52-67-23-66.sa-east-1.compute.amazonaws.com) we have a production environment of the application, so if you want to test a production version use the link as base url
+
 ---
 ## 1. Prerequisites
 
