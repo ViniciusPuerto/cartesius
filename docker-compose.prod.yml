@@ -1,22 +1,16 @@
-version: "3.9"
-
 services:
-  # ───────────────────────────────────────────────────────────────
-  # APPLICATION CONTAINER
-  # Built from the production‐optimised Dockerfile (multistage).
-  # ----------------------------------------------------------------
   app:
-    env_file: .env.production
     build:
       context: .
     image: cartesius:latest
+    env_file: .env.production
     environment:
+      PGHOST: db
+      PGUSER: postgres
+      PGPASSWORD: password
+      PGDATABASE: cartesius_production
       RAILS_ENV: production
-      # === Database ===
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:password@db:5432/cartesius_production}
-      # === Secrets ===
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      # === Runtime tuning ===
       RAILS_LOG_TO_STDOUT: "1"
       RAILS_MAX_THREADS: 5
     ports:
