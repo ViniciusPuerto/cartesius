@@ -50,8 +50,8 @@ jobs:
       - name: Install system deps
         run: sudo apt-get update && sudo apt-get -y install libpq-dev
 
-      - name: Prepare database
-        run: bundle exec rails db:prepare
+      - name: Load schema (skip seeds)
+        run: bundle exec rails db:schema:load
 
       - name: Run RSpec
         run: bundle exec rspec --format progress
