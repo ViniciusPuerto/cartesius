@@ -82,17 +82,4 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  primary:
-    url: <%= ENV.fetch("DATABASE_URL") %>
-
-  cache:
-    url: <%= ENV.fetch("DATABASE_URL") %>
-    database: <%= "#{ActiveRecord::Base.connection_db_config.database}_cache" %>
-
-  queue:
-    url: <%= ENV.fetch("DATABASE_URL") %>
-    database: <%= "#{ActiveRecord::Base.connection_db_config.database}_queue" %>
-
-  cable:
-    url: <%= ENV.fetch("DATABASE_URL") %>
-    database: <%= "#{ActiveRecord::Base.connection_db_config.database}_cable" %>
+  url: <%= ENV.fetch("DATABASE_URL") %>
