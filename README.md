@@ -23,7 +23,7 @@ Nothing else is required on your host – no Ruby, Node or database.
 
 ```bash
 # Clone and enter the project
-$ git clone <repo-url> cartesius
+$ git clone https://github.com/ViniciusPuerto/cartesius
 $ cd cartesius
 
 # Build image & start PostGIS container
