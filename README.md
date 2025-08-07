@@ -8,7 +8,7 @@ The default demo data contains a single *main* board plus one frame and a few ci
 
 [Here](https://app.swaggerhub.com/apis-docs/VINICIUSALVESPORTO/Cartesius/1.0.0) you can see the swagger docs for the api
 
-[Here](ec2-52-67-23-66.sa-east-1.compute.amazonaws.com) we have a production environment of the application, so if you want to test a production version use the link as base url
+[Production (HTTP)](http://ec2-52-67-23-66.sa-east-1.compute.amazonaws.com) — public deployment behind Caddy. Use this as the base URL for manual tests.
 
 ---
 ## 1. Prerequisites

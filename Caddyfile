@@ -5,7 +5,7 @@
 # When you later attach a real domain and want HTTPS, replace the site
 # address (:80) with the domain name and open port 443 in your compose file.
 
-:80 {
+http://52.67.23.66, http://ec2-52-67-23-66.sa-east-1.compute.amazonaws.com {
     encode gzip
 
     # Proxy all incoming requests to the Rails app service
