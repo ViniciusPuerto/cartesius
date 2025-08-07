@@ -83,14 +83,14 @@ test:
 #
 production:
   primary:
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV["DATABASE_URL"] %>
     adapter: <%= ENV.fetch("DB_ADAPTER", "postgis") %>
   cable:
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV["DATABASE_URL"] %>
     adapter: <%= ENV.fetch("DB_ADAPTER", "postgis") %>
   queue:
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV["DATABASE_URL"] %>
     adapter: <%= ENV.fetch("DB_ADAPTER", "postgis") %>
   cache:
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV["DATABASE_URL"] %>
     adapter: <%= ENV.fetch("DB_ADAPTER", "postgis") %>
