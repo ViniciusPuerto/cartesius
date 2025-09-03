@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.6"
 gem "activerecord-postgis-adapter", "~> 11.0"
 gem "puma", ">= 5.0"
 
